@@ -1,0 +1,26 @@
+<script type="application/javascript" src="core/xtag-core.js"></script>
+<template>
+    <p></p>
+</template>
+
+<script>
+    xtag.register('netease-clock', {
+        lifecycle: {
+            created: function () {
+                this.start();
+            }
+        },
+        methods: {
+            start: function () {
+                this.update()
+                this.interval = setInterval(this.update(), 1000)
+            },
+            stop: function () {
+                this.xtag.interval = clearInterval(this.xtag.interval)
+            },
+            update: function () {
+                this.children[1].innerText = new Date().toLocaleTimeString()
+            }
+        }
+    })
+</script>

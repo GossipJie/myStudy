@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ModuleDriver</title>
+</head>
+<body>
+    <h1>封装一个数据驱动模板</h1>
+    <div id="detail-data">
+        <p id="totalInvestmentAmt"></p>
+        <p id="totalBillAmt"></p>
+    </div>
+    <button id="filterRate">刷新</button>
+    <script type="application/javascript" src="plug/jquery-3.4.1.js"></script>
+    <script type="application/javascript" src="core/module-driver.js"></script>
+    <script type="application/javascript">
+        var module_config = { // 模块化配置
+            detail: {
+                model: null,
+                render: function() {
+                    console.log('detail调用render')
+                    for (var p in this.model) {
+                        $("#"+p, this.view).text(this.model[p])
+                    }
+                },
+                view: $('#detail-data')
+            },
+            invest: {
+                model: null,
+                render: function() {
+                    console.log('invest')
+                },
+                view: null
+            },
+            list: {
+                model: null,
+                render: function() {
+                    console.log('list')
+                },
+                view: null
+            }
+        }
+        $(function () {
+            $.getJSON("json/data.json", function (data) {
+                let meta = data
+                ModuleDriver.init(meta, module_config)
+            })
+            $("#filterRate").on('click', function () {
+                $.getJSON("json/data1.json", function (data) {
+                    let meta = data
+                    ModuleDriver.load(meta, module_config)
+                })
+            })
+        });
+    </script>
+</body>
+</html>
